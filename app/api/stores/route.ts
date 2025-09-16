@@ -2,10 +2,7 @@ import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-export async function POST (
-    req: Request,
-    { params } : {params:{storeId: string}}
-) {
+export async function POST (req: Request) {
     try {
         const {userId} =await  auth();
         const body = await req.json();
@@ -19,19 +16,11 @@ export async function POST (
             return new NextResponse("Name is required", {status: 400})
         }
 
-        if(!params.storeId){
-            return new NextResponse("Store id is required",{status: 400})
-        }
-
         const store = await prismadb.store.create({
-            where : {
-                id: params.storeId,
-                userId
-            }, 
             data : {
-                name
+                name,
+                userId
             }
-
         })
 
         return NextResponse.json(store);
@@ -43,10 +32,7 @@ export async function POST (
 
 
 
-export async function DELETE (
-    req: Request,
-    { params } : {params:{storeId: string}}
-) {
+export async function DELETE (req: Request) {
     try {
         const {userId} =await  auth();
 
@@ -54,13 +40,16 @@ export async function DELETE (
             return new NextResponse("Unauthentificated",{status:401})
         }
 
-        if(!params.storeId){
+        const body = await req.json();
+        const { storeId } = body;
+
+        if(!storeId){
             return new NextResponse("Store id is required",{status: 400})
         }
 
         const store = await prismadb.store.deleteMany({
             where : {
-                id: params.storeId,
+                id: storeId,
                 userId
             }
         })
