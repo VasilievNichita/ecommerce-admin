@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
@@ -140,7 +141,12 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                                 <FormItem>
                                     <FormLabel>Background image</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Image URL" {...field} />
+                                        <ImageUpload 
+                                            value={field.value ? [field.value] : []}
+                                            disabled={loading}
+                                            onChange={(url) => field.onChange(url)}
+                                            onRemove={() => field.onChange('')}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
