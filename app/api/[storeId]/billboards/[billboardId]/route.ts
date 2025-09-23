@@ -1,6 +1,6 @@
-import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import prismadb from "@/lib/prismadb";
 
 export async function GET (
     req: Request,
@@ -46,6 +46,10 @@ export async function PATCH (
             return new NextResponse("Image URL is required", { status: 400 });
         }
 
+        if (!params.billboardId) {
+            return new NextResponse("Billboard id is required", { status: 400 });
+        }
+
         if (!params.storeId) {
             return new NextResponse("Store id is required", { status: 400 });
         }
@@ -53,7 +57,7 @@ export async function PATCH (
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
-                userId,
+                userId
             }
         });
 
@@ -67,7 +71,7 @@ export async function PATCH (
             },
             data: {
                 label,
-                imageUrl,
+                imageUrl
             }
         });
 
@@ -89,6 +93,10 @@ export async function DELETE (
             return new NextResponse("Unauthenticated", { status: 401 });
         }
 
+        if (!params.billboardId) {
+            return new NextResponse("Billboard id is required", { status: 400 });
+        }
+
         if (!params.storeId) {
             return new NextResponse("Store id is required", { status: 400 });
         }
@@ -96,7 +104,7 @@ export async function DELETE (
         const storeByUserId = await prismadb.store.findFirst({
             where: {
                 id: params.storeId,
-                userId,
+                userId
             }
         });
 
