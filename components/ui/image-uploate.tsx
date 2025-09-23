@@ -1,20 +1,20 @@
 "use client"
 
-import { count } from "console";
 import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { ImagePlus, Trash } from "lucide-react";
 import Image from "next/image";
+import { CldUploadWidget } from "next-cloudinary"
 
 interface ImageUploadProps {
-    dusabled?: boolean;
+    disabled?: boolean;
     onChange: (value:string) => void;
     onRemove: (value:string) => void;
     value: string[];
 }
 
 export const ImageUpload:React.FC<ImageUploadProps> = ({
-    dusabled,
+    disabled,
     onChange,
     onRemove,
     value
@@ -59,8 +59,8 @@ export const ImageUpload:React.FC<ImageUploadProps> = ({
                     }
 
                     return (
-                        <Button type="button" disabled={dusabled} variant="secondary" onClick={onClick}>
-                            <ImagePlus className="h-4 w-2 mr-4" />
+                        <Button type="button" disabled={disabled} variant="secondary" onClick={onClick}>
+                            <ImagePlus className="h-4 w-4 mr-2" />
                             Upload an image
                         </Button>
                     )
