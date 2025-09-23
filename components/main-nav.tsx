@@ -18,6 +18,21 @@ export function MainNav({
             active: pathName === `${params.storeId}`,
         },
         {
+            href: `/${params.storeId}/billboards`,
+            label: 'Billboards',
+            active: pathName === `/${params.storeId}/billboards`,
+        },
+        {
+            href: `/${params.storeId}/categories`,
+            label: 'Categories',
+            active: pathName === `/${params.storeId}/categories`,
+        },
+        {
+            href: `/${params.storeId}/sizes`,
+            label: 'Sizes',
+            active: pathName === `/${params.storeId}/sizes`,
+        },
+        {
             href: `/${params.storeId}/settings`,
             label : 'Settings',
             active: pathName === `${params.storeId}/settings`,
@@ -35,7 +50,7 @@ export function MainNav({
                     href={route.href}
                     className={cn(
                         "text-sm font-medium transition-colors hover:text-primary",
-                        route.active ? "text-black dak:text-white" : "text-muted-foreground"
+                        route.active ? "text-black dark:text-white" : "text-muted-foreground"
                     )}
                 >
                 {route.label}
