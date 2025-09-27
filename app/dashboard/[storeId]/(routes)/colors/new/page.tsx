@@ -13,3 +13,4 @@ const NewColorPage = () => {
 export default NewColorPage;
 
 
+
