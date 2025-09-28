@@ -15,11 +15,18 @@ export default async function SetupLayout ({
         redirect('/sign-in');
     }
 
-    const store = await prismadb.store.findFirst({
-        where: {
-            userId 
-        }
-    });
+    let store = null;
+    
+    try {
+        store = await prismadb.store.findFirst({
+            where: {
+                userId 
+            }
+        });
+    } catch (error) {
+        console.error('Database connection error:', error);
+        // Continue without redirecting if database is not available
+    }
 
     if(store){
       redirect(`/${store.id}`)  
