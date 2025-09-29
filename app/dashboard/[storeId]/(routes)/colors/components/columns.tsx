@@ -36,8 +36,3 @@ export const columns: ColumnDef<ColorColumn>[] = [
         cell: ({ row }) => <CellAction data={row.original} />
      }
 ]
-
-
-
-
-
