@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Store {
@@ -28,6 +27,7 @@ model Billboard {
   store     Store @relation("StoreToBillboard", fields: [storeId], references: [id])
   label     String
   imageUrl  String
+  categories Category[] @relation("BillboardToCategory")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -37,7 +37,7 @@ model Category {
      storeId String
      store Store @relation("StoreToCategory", fields: [storeId], references: [id])
      billboardId String
-     billboard Billboard @relation(fields: [billboardId], references: [id])
+     billboard Billboard @relation("BillboardToCategory", fields: [billboardId], references: [id])
      products Product[] @relation("CategoryToProduct")
      name String
      createdAt DateTime @default(now())
@@ -53,7 +53,7 @@ model Size {
      store Store @relation("StoreToSize", fields: [storeId], references: [id])
      name  String
      value String
-     products Product[]
+     products Product[] @relation("SizeToProduct")
      createdAt DateTime @default(now())
      updatedAt DateTime @updatedAt
 
@@ -66,7 +66,7 @@ model Color {
      store Store @relation("StoreToColor", fields: [storeId], references: [id])
      name  String
      value String
-     products Product[]
+     products Product[] @relation("ColorToProduct")
      createdAt DateTime @default(now())
      updatedAt DateTime @updatedAt
 
@@ -84,9 +84,9 @@ model Product {
      isFeatured Boolean @default(false)
      isArchived Boolean @default(false)
      sizeId String
-     size Size @relation(fields: [sizeId], references: [id])
+     size Size @relation("SizeToProduct", fields: [sizeId], references: [id])
      colorId String
-     color Color @relation(fields: [colorId], references: [id])
+     color Color @relation("ColorToProduct", fields: [colorId], references: [id])
      images Image[]
      orderItems OrderItem[]
      createdAt DateTime @default(now())
@@ -127,7 +127,7 @@ model Order {
 model OrderItem {
      id String @id @default(uuid())
      orderId String
-     order Order @relation(fields: [orderId], references: [id])
+     order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
      productId String
      product Product @relation(fields: [productId], references: [id])
 
